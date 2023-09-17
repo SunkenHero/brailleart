@@ -17,6 +17,7 @@ with Image.open("debian.png", "r") as image:
     if image.size[0] % 2 == 1:
         image = Image.new("RGB", (13 + 1, 8), (0, 0, 0)).paste(image, (0, 0))
 
+print("\x1b[38;2;255;0;95m", end="")
 for y in range(height):
     for x in range(int(width * 2)):
         char = 0
@@ -24,8 +25,8 @@ for y in range(height):
         imagelist = list(croped.getdata())
 
         for i in [7, 6, 5, 3, 1, 4, 2, 0]:
-            char = char << 1
-            char = char | imagelist[i]
+            char = char << 1 | imagelist[i]
         print(chr(0x2800 + char), end="")
     print("")
+print("\x1b[0m", end="")
 print(f"Time: {(time() - start_time) * 1000:.1f}ms")
