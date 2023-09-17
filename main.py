@@ -3,10 +3,11 @@ from time import time
 
 start_time = time()
 
-height = 30
+height = 20
 
 with Image.open("debian.png", "r") as image:
     image = image.convert("L")
+    #image = ImageChops.invert(image) #needed when using arch.png
     image = image.point(lambda x: 0 if x < 1 else 1, '1')
     scale_height = height * 4
     original_width, original_height = image.size
