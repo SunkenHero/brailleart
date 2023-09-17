@@ -2,17 +2,22 @@ from PIL import Image, ImageChops
 from time import time
 
 start_time = time()
+color = (255, 255, 255)
 
-height = 20
-
-color = (255, 255, 255) #default white
-
-color = (255, 0, 95) #color for debian.png
+##############
+height = 20 #height in symbols, width gets autocalculated
+image_path = "debian.png" #path to image
+#image_path = "arch.png" #path to image
+invert = False #(True) needed when using arch.png
+color = (255, 0, 95) #color
 #color = (0, 200, 255) #color for arch.png
+##############
+
 
 with Image.open("debian.png", "r") as image:
     image = image.convert("L")
-    #image = ImageChops.invert(image) #needed when using arch.png
+    if(invert):
+        image = ImageChops.invert(image)
     image = image.point(lambda x: 0 if x < 1 else 1, '1')
     scale_height = height * 4
     original_width, original_height = image.size
