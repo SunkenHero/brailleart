@@ -5,7 +5,10 @@ start_time = time()
 
 height = 20
 
-color = (255, 0, 95)
+color = (255, 255, 255) #default white
+
+color = (255, 0, 95) #color for debian.png
+#color = (0, 200, 255) #color for arch.png
 
 with Image.open("debian.png", "r") as image:
     image = image.convert("L")
