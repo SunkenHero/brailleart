@@ -1,21 +1,31 @@
-from PIL import Image
-from random import randint
+from PIL import Image, ImageChops
+from time import time
 
-char = 0
+start_time = time()
 
-image = Image.new('1', (2, 4))
-for y in range(image.height):
-    for x in range(image.width):
-        if(randint(0, 1) > 0):
-            image.putpixel((x, y), 1)
-image.save('test.bmp')
-imagelist = list(image.getdata())
-print(imagelist)
+height = 30
 
-arrange = [7, 6, 5, 3, 1, 4, 2, 0]
+with Image.open("debian.png", "r") as image:
+    image = image.convert("L")
+    image = image.point(lambda x: 0 if x < 1 else 1, '1')
+    scale_height = height * 4
+    original_width, original_height = image.size
+    aspect_ratio = original_width / original_height
+    scale_width = int(scale_height * aspect_ratio)
+    width = scale_width / 4
+    image = image.resize((scale_width, scale_height))
+    if image.size[0] % 2 == 1:
+        image = Image.new("RGB", (13 + 1, 8), (0, 0, 0)).paste(image, (0, 0))
 
-for i in arrange:
-    char = char << 1
-    char = char | imagelist[i]
+for y in range(height):
+    for x in range(int(width * 2)):
+        char = 0
+        croped = image.crop((x * 2, y * 4, x * 2 + 2, y * 4 + 4))
+        imagelist = list(croped.getdata())
 
-print(chr(0x2800 + char))
+        for i in [7, 6, 5, 3, 1, 4, 2, 0]:
+            char = char << 1
+            char = char | imagelist[i]
+        print(chr(0x2800 + char), end="")
+    print("")
+print(f"Time: {(time() - start_time) * 1000:.1f}ms")
