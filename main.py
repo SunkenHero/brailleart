@@ -5,6 +5,8 @@ start_time = time()
 
 height = 20
 
+color = (255, 0, 95)
+
 with Image.open("debian.png", "r") as image:
     image = image.convert("L")
     #image = ImageChops.invert(image) #needed when using arch.png
@@ -18,7 +20,7 @@ with Image.open("debian.png", "r") as image:
     if image.size[0] % 2 == 1:
         image = Image.new("RGB", (13 + 1, 8), (0, 0, 0)).paste(image, (0, 0))
 
-print("\x1b[38;2;255;0;95m", end="")
+print(f"\x1b[38;2;{color[0]};{color[1]};{color[2]}m", end="")
 for y in range(height):
     for x in range(int(width * 2)):
         char = 0
